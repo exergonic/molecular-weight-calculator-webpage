@@ -1,10 +1,10 @@
 const group_regex = /[A-Z][a-z]?[0-9]*/g;
 const sym_regex = /[A-Z][a-z]*/;
 const count_regex = /[0-9][0-9]*/;
-let molmass = 0;
-let arr = [];
+let molecular_mass = 0;
+let elements_data_array = [];
 
-const emap = {
+const element_mass_map = {
     "H": 1.0079,
     "He": 4.0026,
     "Li": 6.941,
@@ -115,53 +115,56 @@ const emap = {
     "Hs": 277,
     "Mt": 268
 }
-// create listener for keyup events
-window.onkeyup = keyup;
 
 // global var for text entered into input DOM element
-let inputTextValue;
+let molecular_formula;
 
-function construct_html(earr) {
+// construct the html for the details of the calculation
+function details_html(element_data_array) {
     let html = "";
-    for (entry of earr) {
-        // html += entry[0] + " x " + entry[1] + " = " + entry[1] * emap[entry[0]] + "<br>";
-        let sym = entry[0]
-        let count = entry[1]
-        let mass = entry[1] * emap[entry[0]]
-        html += `${sym} x ${count} = ${mass.toFixed(4)} <br>`;
+    for (entry of element_data_array) {
+        let element_symbol = entry[0]
+        let element_count = entry[1]
+        let element_mass = entry[1] * element_mass_map[entry[0]]
+        html += `${element_symbol} x ${element_count} = ${element_mass.toFixed(4)} <br>`;
     }
     return html
 };
 // 
 function parse_formula(formula) {
     let groups = [...formula.matchAll(group_regex)]
-    // console.log(groups)
     for (let group of groups) {
-        let esymcount = group[0];
-        // console.log("esymcount -->" + esymcount + "...");
-        let esym = sym_regex.exec(esymcount);
-        let ecount = count_regex.exec(esymcount) || 1;
-        arr.push([esym, ecount])
-        // console.log("esym --> " + esym + " ecount --> " + ecount);
-        molmass = molmass + emap[esym] * ecount;
-        // console.log(esymcount + " --> " + emap[esym] * ecount);
+        let esymcount = group[0];  //element symbol and it's count
+        let element_symbol = sym_regex.exec(esymcount); //element symbol
+        let element_count = count_regex.exec(esymcount) || 1; // element count
+
+        elements_data_array.push([element_symbol, element_count])
+        molecular_mass += element_mass_map[element_symbol] * element_count;
     }
-    return molmass;
+    return molecular_mass;
 }
+
+// create listener for keyup events
+window.onkeyup = keyup;
 
 // function to run on keyup
 function keyup(e) {
-    // if (e.code === 'Enter') {
-    molmass = 0;
+    // reset certain variables on every keypress
+    molecular_mass = 0;
     details = "";
-    arr = [];
-    inputTextValue = e.target.value;
-        // console.log("Got --> " + inputTextValue);
+    elements_data_array = [];
 
-    molmass = parse_formula(inputTextValue);
-    details = construct_html(arr);
-    document.getElementById('output-text').innerHTML = molmass.toFixed(4);
-    document.getElementById('details-text').innerHTML = details;
+    // the input molecular formula
+    molecular_formula = e.target.value;
 
-    // };
+    // calculate the molecular mass and construct the detail of the calculation
+    molecular_mass = parse_formula(molecular_formula);
+    
+    // elements_data_array is a global variable constructed in function `parse_formula`
+    details_txt = details_html(elements_data_array);
+    
+    // modify the html on index.html to show molecular mass and the 
+    // detail of the calculation.
+    document.getElementById('output-text').innerHTML = molecular_mass.toFixed(4);
+    document.getElementById('details-text').innerHTML = details_txt;
 };
