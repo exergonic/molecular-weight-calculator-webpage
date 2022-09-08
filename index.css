@@ -1,0 +1,13 @@
+body {
+    align-items: center;
+    text-align: center;
+}
+input {
+    width: 75%;
+    border-radius: 3px;
+    /* border: none; */
+}
+
+.details-text {
+    color: grey;
+}
