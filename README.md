@@ -2,7 +2,7 @@
 
 Calculates the molecular mass (molar mass) of a chemical formula _as you type it_.
 
-<video src="./demo.mp4" autoplay loop muted playsinline width="50%"></video>
+![Demo](./demo.gif)
 
 ## Features
 
@@ -15,10 +15,10 @@ Calculates the molecular mass (molar mass) of a chemical formula _as you type it
 
 Type a chemical formula into the input field. Examples:
 
-| Formula | Mass |
+| Formula | Name |
 |---------|------|
-| `H2O` | 18.0152 |
-| `Mg(OH)2` | 58.3196 |
-| `Ca(NO3)2` | 164.0878 |
-| `Fe2(SO4)3` | 399.8778 |
-| `C6H12O6` | 180.1554 |
+| `H2O` | Water |
+| `Mg(OH)2` | Magnesium hydroxide |
+| `Ca(NO3)2` | Calcium nitrate |
+| `Fe2(SO4)3` | Iron(III) sulfate |
+| `C6H12O6` | Glucose |
