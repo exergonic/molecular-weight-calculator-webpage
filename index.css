@@ -76,8 +76,53 @@ h1:has(#output-text) {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
     color: #4a5568;
     font-size: 0.95rem;
-    line-height: 1.8;
     max-width: 480px;
     width: 100%;
     min-height: 20px;
+}
+
+.detail-grid {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.detail-grid tr:not(:last-child) td {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-grid td {
+    padding: 6px 4px;
+}
+
+.detail-element {
+    font-weight: 600;
+    color: #2d3748;
+    width: 28px;
+}
+
+.detail-atomic-mass {
+    color: #a0aec0;
+    font-size: 0.85rem;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+
+.detail-count {
+    color: #718096;
+    text-align: left;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    padding-left: 24px !important;
+}
+
+.detail-mass {
+    font-weight: 600;
+    color: #667eea;
+    text-align: right;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+
+.detail-source {
+    font-size: 0.8rem;
+    color: #a0aec0;
+    margin-top: 12px;
+    text-align: center;
 }

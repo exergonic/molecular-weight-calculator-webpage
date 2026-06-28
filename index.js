@@ -118,14 +118,21 @@ let molecular_formula;
 
 // construct the html for the details of the calculation
 function details_html(element_data_array) {
-    let html = "";
+    let rows = "";
     for (entry of element_data_array) {
         let element_symbol = entry[0]
         let element_count = entry[1]
-        let element_mass = entry[1] * element_mass_map[entry[0]]
-        html += `${element_symbol} x ${element_count} = ${element_mass.toFixed(4)} <br>`;
+        let atomic_mass = element_mass_map[entry[0]]
+        let element_mass = element_count * atomic_mass
+        rows += `<tr>
+            <td class="detail-element">${element_symbol}</td>
+            <td class="detail-atomic-mass">${atomic_mass.toFixed(4)}</td>
+            <td class="detail-count">× ${element_count}</td>
+            <td class="detail-mass">${element_mass.toFixed(4)}</td>
+        </tr>`;
     }
-    return html
+    return `<table class="detail-grid">${rows}</table>
+        <div class="detail-source">Atomic masses from IUPAC</div>`
 };
 // 
 function parse_formula(formula) {
