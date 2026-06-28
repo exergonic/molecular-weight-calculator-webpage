@@ -2,7 +2,7 @@
 
 Calculates the molecular mass (molar mass) of a chemical formula _as you type it_.
 
-![Demo](./demo.mp4)
+<video src="./demo.mp4" autoplay loop muted playsinline width="100%"></video>
 
 ## Features
 
