@@ -1,6 +1,3 @@
-const group_regex = /[A-Z][a-z]?[0-9]*/g;
-const sym_regex = /[A-Z][a-z]*/;
-const count_regex = /[0-9][0-9]*/;
 let molecular_mass = 0;
 let elements_data_array = [];
 
@@ -132,16 +129,58 @@ function details_html(element_data_array) {
 };
 // 
 function parse_formula(formula) {
-    let groups = [...formula.matchAll(group_regex)]
-    for (let group of groups) {
-        let esymcount = group[0];  //element symbol and it's count
-        let element_symbol = sym_regex.exec(esymcount); //element symbol
-        let element_count = count_regex.exec(esymcount) || 1; // element count
+    let stack = [{}];
+    let i = 0;
 
-        elements_data_array.push([element_symbol, element_count])
-        molecular_mass += element_mass_map[element_symbol] * element_count;
+    while (i < formula.length) {
+        let ch = formula[i];
+        if (ch === '(') {
+            stack.push({});
+            i++;
+        } else if (ch === ')') {
+            i++;
+            let numStr = '';
+            while (i < formula.length && /[0-9]/.test(formula[i])) {
+                numStr += formula[i];
+                i++;
+            }
+            let multiplier = numStr ? parseInt(numStr) : 1;
+            let group = stack.pop();
+            let top = stack[stack.length - 1];
+            for (let sym in group) {
+                top[sym] = (top[sym] || 0) + group[sym] * multiplier;
+            }
+        } else if (/[A-Z]/.test(ch)) {
+            let sym = ch;
+            i++;
+            while (i < formula.length && /[a-z]/.test(formula[i])) {
+                sym += formula[i];
+                i++;
+            }
+            let numStr = '';
+            while (i < formula.length && /[0-9]/.test(formula[i])) {
+                numStr += formula[i];
+                i++;
+            }
+            let count = numStr ? parseInt(numStr) : 1;
+            let top = stack[stack.length - 1];
+            top[sym] = (top[sym] || 0) + count;
+        } else {
+            i++;
+        }
     }
-    return molecular_mass;
+
+    let counts = stack[0];
+    let mass = 0;
+    elements_data_array = [];
+    for (let sym in counts) {
+        let count = counts[sym];
+        elements_data_array.push([sym, count]);
+        mass += element_mass_map[sym] * count;
+    }
+
+    molecular_mass = mass;
+    return mass;
 }
 
 // create listener for keyup events
